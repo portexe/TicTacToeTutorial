@@ -1,34 +1,50 @@
-#container {
-    width: 320px;
-    height: 320px;
-    margin: auto;
-    margin-top: 100px;
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 'Patua One';
 }
-#container h1 {
-    text-align: center;
-    font-size: 40px;
-    margin-bottom: 50px;
+
+body {
+	background-color: #97aabd;
 }
-.q {
-    width: 100px;
-    height: 100px;
-    float: left;
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
-    text-align: center;
-    font-family: sans-serif;
-    font-size: 100px;
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	padding: 0px;
+	margin: 10px auto;
+	
+	background-color: #272727 ;
 }
-.q:hover {
-    background-color: azure;
+
+table tr td {
+	width: 80px;
+	height: 80px;
+	border: 1px solid rgba(255,255,255,.05);
+	font-size: 30px;
+	text-align: center;
 }
-#q0, #q1, #q2, #q3, #q4, #q5 {
-    border-bottom: 10px solid black;
-}
-#q2, #q5, #q8, #q1, #q4, #q7 {
-    border-left: 10px solid black;
+
+table tr td:hover {
+	background: #2c3531;
+	cursor: pointer;
 }
 .winner {
-    color: red;
+	width: 240px;
+	height: 140px;
+	margin: 10px auto;
+	font-size: 60px;
+	text-align: center;
+}
+.winner span {
+	font-size: 40px;
+	display: block;
+}
+#reload {
+	width: 240px;
+	height: 100px;
+	margin: 10px auto;
+	display: block;
+	border: none;
+	background-color: #272727;
+	font-size: 40px;
 }
