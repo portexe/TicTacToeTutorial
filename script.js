@@ -1,55 +1,68 @@
-const winningCombos = [
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
-    [0,4,8],
-    [2,4,6],
-    [0,3,6],
-    [1,4,7],
-    [2,5,8]
-];
+$(document).ready(function () {
 
-const grid = () => Array.from(document.getElementsByClassName('q'));
-const qNumId = (qEl) => Number.parseInt(qEl.id.replace('q', ''));
-const emptyQs = () => grid().filter(_qEl => _qEl.innerText === '');
-const allSame = (arr) => arr.every(_qEl => _qEl.innerText === arr[0].innerText && _qEl.innerText !== ''); 
+	var move = 1;
+	var play = true;
 
-const takeTurn = (index, letter) => grid()[index].innerText = letter;
-const opponentChoice = () => qNumId(emptyQs()[Math.floor(Math.random() * emptyQs().length)]);
+	$("#board tr td").click(function () {
+		if ($(this).text() == "" && play) {
+			if ((move % 2) == 1) {
+				$(this).append("X");
+				$(this).css('color', "#61892f");
+				
+			} else {
+				$(this).append("O");
+				$(this).css('color', "#e85a4f");
+			}
+			move++;
+			if (checkForWinner() != -1 && checkForWinner() != "") {
+				if (checkForWinner() == "X") {
+					$('body').append('<div class="winner"><span>Winner</span>X</div><button onclick="location.reload();" id="reload">Play Again</button>');
+					$('.winner').css('background-color', '#61892f');
+					$('#reload').css('color','#61892f');
+				} else {
+					$('body').append('<div class="winner"><span>Winner</span>O</div><button onclick="location.reload();" id="reload">Play Again</button>');
+					$('.winner').css('background-color', '#e85a4f');
+					$('#reload').css('color','#e85a4f');
+				}
+				play = false;
+			}
+		}
+	});
 
-const endGame = (winningSequence) => { 
-    winningSequence.forEach(_qEl => _qEl.classList.add('winner'));
-    disableListeners();
-};
-const checkForVictory = () => {
-    let victory = false;
-    winningCombos.forEach(_c => {
-        const _grid = grid();
-        const sequence = [_grid[_c[0]], _grid[_c[1]], _grid[_c[2]]];
-        if(allSame(sequence)) {
-            victory = true;
-            endGame(sequence);
-        }
-    });
-    return victory;
-};
+	function checkForWinner() {
+		var space1 = $("#board tr:nth-child(1) td:nth-child(1)").text();
+		var space2 = $("#board tr:nth-child(1) td:nth-child(2)").text();
+		var space3 = $("#board tr:nth-child(1) td:nth-child(3)").text();
+		var space4 = $("#board tr:nth-child(2) td:nth-child(1)").text();
+		var space5 = $("#board tr:nth-child(2) td:nth-child(2)").text();
+		var space6 = $("#board tr:nth-child(2) td:nth-child(3)").text();
+		var space7 = $("#board tr:nth-child(3) td:nth-child(1)").text();
+		var space8 = $("#board tr:nth-child(3) td:nth-child(2)").text();
+		var space9 = $("#board tr:nth-child(3) td:nth-child(3)").text();
+		// check rows
+		if ((space1 == space2) && (space2 == space3)) {
+			return space3;
+		} else if ((space4 == space5) && (space5 == space6)) {
+			return space6;
+		} else if ((space7 == space8) && (space8 == space9)) {
+			return space9;
+		}
+		// check columns
+		else if ((space1 == space4) && (space4 == space7)) {
+			return space7;
+		} else if ((space2 == space5) && (space5 == space8)) {
+			return space8;
+		} else if ((space3 == space6) && (space6 == space9)) {
+			return space9;
+		}
+		// check diagonals
+		else if ((space1 == space5) && (space5 == space9)) {
+			return space9;
+		} else if ((space3 == space5) && (space5 == space7)) {
+			return space7;
+		}
+		// no winner
+		return -1;
+	}
 
-const opponentTurn = () => {
-    disableListeners();
-    setTimeout(() => {
-        takeTurn(opponentChoice(), 'o');
-        if(!checkForVictory())
-            enableListeners();
-    }, 1000);
-}
-
-const clickFn = ($event) => {
-    takeTurn(qNumId($event.target), 'x');
-    if(!checkForVictory())
-        opponentTurn();
-};
-
-const enableListeners = () => grid().forEach(_qEl => _qEl.addEventListener('click', clickFn));
-const disableListeners = () => grid().forEach(_qEl => _qEl.removeEventListener('click', clickFn));
-
-enableListeners();
+});
